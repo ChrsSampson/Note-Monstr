@@ -1,24 +1,41 @@
-import logo from './logo.svg';
 import './App.css';
 
+import useLocalStorage from './lib/useLocalStorage';
+import styled from '@emotion/styled';
+
+
+import {ThemeProvider} from '@emotion/react';
+import {theme} from './lib/theme';
+import {useTheme} from '@emotion/react';
+
+import Navbar from './components/Navbar';
+import NoteArea from './components/NoteArea';
+
+const AppContainer = styled.main`
+  height: 100vh;
+  width:  100vw;
+  overflow: hidden;
+  background: ${() => useTheme().background};
+  color: ${() => useTheme().text};
+  transition: 0.5s;
+
+`
+
 function App() {
+
+  const [themeMode, setThemeMode] = useLocalStorage('theme', 'dark');
+
+  function changeTheme() {
+    setThemeMode(themeMode === 'dark' ? 'light' : 'dark');
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme[themeMode]}>
+      <AppContainer className="App">
+        <Navbar changeTheme={changeTheme} themeMode={themeMode} />
+        <NoteArea />
+      </AppContainer>
+    </ThemeProvider>
   );
 }
 
