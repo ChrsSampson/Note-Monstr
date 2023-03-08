@@ -6,11 +6,8 @@ import IconButton from "./IconButton";
 import { useState } from "react";
 import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
-import {ImCancelCircle} from 'react-icons/im';
 
 import {v4} from 'uuid';
-
-
 
 
 const FormGroup = styled.div`
@@ -43,43 +40,48 @@ const TextArea = styled.textarea`
     resize: none;
 `
 
-export default function ({addNote, show, cancel, contentState}) {
 
-    const theme = useTheme();
+export default function ({addNote, show, cancel, colors}) {
 
     const [title, setTitle] = useState('')
-
-    const Form = styled.form`
-        position: fixed;
-        top: 50%;
-        left: 0;
-        height: auto;
-        width: auto;
-        max-width: 300px;
-        max-height: 250px;
-        padding: 1em;
-        border-radius: 1em;
-        transition: 0.5s;
-        color: ${theme.text};
-    `
+    const [content, setContent] = useState('')
+    const [colorSelector, setColorSelector] = useState(pickRandomColor())
 
     function handleSubmit(e){
-        e.preventDefault();
+        e.preventDefault()
+        const id = v4()
+        const data = {
+            id: id,
+            title: title,
+            content: content,
+            area: null,
+            color: colorSelector
+        }
+
+        addNote(id, data)
+        // clear form
+        setTitle('')
+        setContent('')
     }
 
+    function pickRandomColor(){
+        const c = Object.values(colors)
+        const random = Math.floor(Math.random() * c.length)
+        return colors[random]
+    }
 
     return(
-        <Form onSubmit={(e) => handleSubmit(e)}>
+        <form>
             <ButtonGroup>
                 <IconButton icon={"❌"} label="Cancel" onClick={cancel} />
-                <IconButton icon={"✅"} submit label="Looks Good" onClick={() => {}} />
+                <IconButton icon={"✅"} submit label="Looks Good" onClick={(e) => {handleSubmit(e)}} />
             </ButtonGroup>
             <FormGroup>
                 <FormInput type="text" placeholder="An Awsome Title" value={title} onChange={(e) => setTitle(e.target.value)} />
             </FormGroup>
             <FormGroup>
-                <TextArea placeholder="Your Sicc Note" />
+                <TextArea placeholder="Your Sicc Note" value={content} onChange={(e) => setContent(e.target.value)} />
             </FormGroup>
-        </Form>
+        </form>
     )
 }
