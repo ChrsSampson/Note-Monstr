@@ -3,14 +3,14 @@
 import {useTheme} from "@emotion/react";
 import styled from "@emotion/styled";
 
-export default function IconButton({icon="🍌", label, onClick, size}) {
+export default function IconButton({icon="🍌", label, onClick, size, color}) {
     const theme = useTheme()
 
     const Button = styled.button`
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: ${theme.text};
+    color: ${color || theme.text};
     background: none;
     border: none;
     border-radius: 50%;

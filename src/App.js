@@ -11,7 +11,7 @@ import {theme} from './lib/theme';
 import {useTheme} from '@emotion/react';
 
 import Navbar from './components/Navbar';
-import NoteArea from './components/NoteArea';
+import AppArea from './components/AppArea';
 
 const borderOffset = 16;
 
@@ -40,7 +40,7 @@ function App() {
     <ThemeProvider theme={theme[themeMode]}>
       <AppContainer style={{height: heightAfterOffset, width: widthAfterOffset}} className="App">
         <Navbar changeTheme={changeTheme} themeMode={themeMode} />
-        <NoteArea />
+        <AppArea />
       </AppContainer>
     </ThemeProvider>
   );

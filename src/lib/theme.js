@@ -10,7 +10,7 @@ export const theme = {
             submit: '#1d2a42',
         },
         textArea: '#9c9cab',
-        shadow: '#0d1017'
+        shadow: '#848484'
     },
     dark: {
         text: '#d8d8d9',
@@ -20,6 +20,6 @@ export const theme = {
             submit: '#98a2b4',
         },
         textArea: '#9c9cab',
-        shadow: '#d8d8d9'
+        shadow: '#000'
     }
 }

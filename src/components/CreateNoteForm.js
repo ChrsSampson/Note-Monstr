@@ -1,7 +1,6 @@
 
 // create new note form
 
-import useLocalStorage from "../lib/useLocalStorage";
 import IconButton from "./IconButton";
 import { useState } from "react";
 import styled from "@emotion/styled";
@@ -28,7 +27,7 @@ const FormInput = styled.input`
     placeholder: ${() => useTheme().text};
 `
 const TextArea = styled.textarea`
-    height: 5em;
+    height: 9em;
     width: 100%;
     padding: .5em;
     font-size: 1.1em;
@@ -39,7 +38,6 @@ const TextArea = styled.textarea`
     border-radius: 1em;
     resize: none;
 `
-
 
 export default function ({addNote, show, cancel, colors}) {
 
@@ -56,9 +54,10 @@ export default function ({addNote, show, cancel, colors}) {
             content: content,
             area: null,
             color: colorSelector,
+            z: 1,
             position: {
-                x: 0,
-                y: 0
+                x: 200,
+                y: 200
             }
         }
 
@@ -84,7 +83,7 @@ export default function ({addNote, show, cancel, colors}) {
                 <FormInput type="text" placeholder="An Awsome Title" value={title} onChange={(e) => setTitle(e.target.value)} />
             </FormGroup>
             <FormGroup>
-                <TextArea placeholder="Your Sicc Note" value={content} onChange={(e) => setContent(e.target.value)} />
+                <TextArea placeholder="Your literary masterpiece..." value={content} onChange={(e) => setContent(e.target.value)} />
             </FormGroup>
         </form>
     )
