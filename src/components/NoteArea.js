@@ -75,6 +75,16 @@ export default function NoteArea () {
         setNotes(newNotes)
     }
 
+    // add the the amout of pixels the note moved to the old position
+    function updateNotePosition(id, info) {
+
+        const oldPosition = notes[id].position
+
+        const newX = oldPosition.x + info.offset.x
+        const newY = oldPosition.y + info.offset.y
+
+        setNotes({...notes, [id]: {...notes[id], position: {x: newX, y: newY}}})
+    }
 
     return (
         <>
@@ -82,7 +92,12 @@ export default function NoteArea () {
                 {/* here be notes and shit */}
                 {
                     Object.values(notes).map((note) => {
-                        return <Note note={note} deleteNote={removeNote} key={note.id} />
+                        return <Note
+                            note={note}
+                            deleteNote={removeNote}
+                            key={note.id}
+                            updateNotePosition={updateNotePosition}
+                            />
                     })
                 }
 

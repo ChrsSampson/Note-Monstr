@@ -55,7 +55,11 @@ export default function ({addNote, show, cancel, colors}) {
             title: title,
             content: content,
             area: null,
-            color: colorSelector
+            color: colorSelector,
+            position: {
+                x: 0,
+                y: 0
+            }
         }
 
         addNote(id, data)

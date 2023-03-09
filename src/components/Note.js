@@ -4,23 +4,22 @@ import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
 import {useState} from "react";
 import IconButton from "./IconButton";
-
+import textAutoColor from "../lib/textAutoColor";
+import { motion } from "framer-motion";
 
 // Draggable cannot go here because it needs a rendered component to display
-export default function Note ({note, deleteNote}) {
+export default function Note ({note, deleteNote, updateNotePosition}) {
 
     const theme = useTheme()
 
-    const [hovered, setHovered] = useState(false)
-
-    const NoteContainer = styled.article`
+    const NoteContainer = styled(motion.article)`
         display: flex;
         flex-direction: column;
         border-radius: .5em;
         height: 10em;
         width: 10em;
         padding: .5em;
-        color: ${theme.text};
+        color: ${textAutoColor(note.color)};
     `
 
     const NoteHeader = styled.div`
@@ -44,14 +43,18 @@ export default function Note ({note, deleteNote}) {
     return (
             <NoteContainer 
                 style={{background: note.color}}
-                onMouseEnter={() => setHovered(true)}
-                onMouseLeave={() => setHovered(false)}
+                animate={{scale: 1}}
+                drag
+                whileDrag={{scale: 1.1, opacity: .8}}
+                transition={{duration: .2}}
+                dragMomentum={false}
+                onDragEnd={(e, info) => updateNotePosition(note.id, info)}
+                // set the initial position of the note
+                initial={{x: note.position.x, y: note.position.y}}
             >
                 <NoteHeader>
                     {note.title}
-                    {hovered &&
-                        <IconButton icon="🗑️" size={".75em"} onClick={() => deleteNote(note.id)}/>
-                    }
+                    <IconButton icon="🗑️" size={".75em"} onClick={() => deleteNote(note.id)}/>
                 </NoteHeader>
                 <NoteBody>
                     {note.content}
