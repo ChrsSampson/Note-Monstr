@@ -3,6 +3,7 @@ import { useTheme } from "@emotion/react";
 import { useState } from "react";
 import {v4} from 'uuid';
 import IconButton from "./IconButton";
+import ColorSwitcher from "./ColorSwitcher";
 
 const NoteArea = styled.div``
 
@@ -12,7 +13,7 @@ const FormGroup = styled.div`
 `
 const ButtonGroup = styled.div`
     display: flex;
-    justify-content: flex-end;    
+    justify-content: space-between;
 `
 
 const FormInput = styled.input`
@@ -21,13 +22,15 @@ const FormInput = styled.input`
     color: ${() => useTheme().text};
     border-bottom: 2px solid ${() => useTheme().text};
     font-size: 1.25em;
+    width: 90%;
     placeholder: ${() => useTheme().text};
 `
 
 
-export default function CreateAreaForm ({addArea, cancel}) {
+export default function CreateAreaForm ({addArea, cancel, colors}) {
 
     const [title, setTitle] = useState('')
+    const [colorSelected, setColorSelected] = useState('')
 
     function handleSubmit(e){
         e.preventDefault()
@@ -35,6 +38,7 @@ export default function CreateAreaForm ({addArea, cancel}) {
         const data = {
             id: id,
             title: title || 'Untitled',
+            color: colorSelected ? colorSelected : pickRandomColor(),
             size: {
                 width: 200,
                 height: 200
@@ -50,11 +54,31 @@ export default function CreateAreaForm ({addArea, cancel}) {
         setTitle('')
     }
 
+    function closeForm () {
+        setTitle('')
+        cancel()
+    }
+
+    function pickRandomColor(){
+        const c = Object.values(colors)
+        const random = Math.floor(Math.random() * c.length)
+        return colors[random]
+    }
+
     return(
         <NoteArea>
             <ButtonGroup>
-                <IconButton icon={"❌"} label="Cancel" onClick={cancel} />
-                <IconButton icon={"✅"} submit label="Looks Good" onClick={(e) => {handleSubmit(e)}} />
+                <FormGroup>
+                    <ColorSwitcher
+                        colors={colors}
+                        currentColor={colorSelected}
+                        setColor={setColorSelected} 
+                    />
+                </FormGroup>
+                <FormGroup>
+                    <IconButton icon={"❌"} label="Cancel" onClick={closeForm} />
+                    <IconButton icon={"✅"} submit label="Looks Good" onClick={(e) => {handleSubmit(e)}} />
+                </FormGroup>
             </ButtonGroup>
             <FormGroup>
                 <FormInput type="text" placeholder="At your command..." value={title} onChange={(e)=> setTitle(e.target.value)} />

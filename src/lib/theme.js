@@ -9,7 +9,8 @@ export const theme = {
             primary: '#98a2b4',
             submit: '#1d2a42',
         },
-        textArea: '#9c9cab',
+        textarea: '#98a2b4',
+        textAreaText: '#0d1017',
         shadow: '#848484'
     },
     dark: {
@@ -19,7 +20,8 @@ export const theme = {
             primary: '#1d2a42',
             submit: '#98a2b4',
         },
-        textArea: '#9c9cab',
+        textarea: '#1d2a42',
+        textAreaText: '#d8d8d9',
         shadow: '#000'
     }
 }

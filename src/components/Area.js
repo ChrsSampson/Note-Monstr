@@ -7,10 +7,10 @@ import styled from "@emotion/styled";
 import { motion, useDragControls } from "framer-motion";
 import {Resizable}  from 're-resizable';
 import IconButton from "./IconButton";
+import textAutoColor from "../lib/textAutoColor";
 
 
-
-export default function NoteArea ({area, updateAreaSize, updateAreaPosition, deleteArea}) {
+export default function NoteArea ({area, updateAreaSize, updateAreaPosition, deleteArea, color}) {
 
     const dragControls = useDragControls();
     const theme = useTheme();
@@ -22,15 +22,16 @@ export default function NoteArea ({area, updateAreaSize, updateAreaPosition, del
     align-items: center;
     min-width: 100%;
     min-height: 100%
-    color: ${theme.background};
-    background: ${theme.text};
+    color: ${textAutoColor(color || theme.background)};
+    border: 2px solid ${theme.text};
+    background: ${color || theme.text};
     cursor: grab;
     border-radius: .5em
 `
     const AreaTitle = styled.h4`
-        font-size: 1.1em;
+        font-size: 1.6em;
         margin: 0;
-        color: ${theme.background};
+        color: ${textAutoColor(color || theme.background)};
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -49,6 +50,10 @@ export default function NoteArea ({area, updateAreaSize, updateAreaPosition, del
         border-radius:  0 0 .5em .5em;
     `
 
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
     return(
         <AreaWrapper
             drag
@@ -66,10 +71,11 @@ export default function NoteArea ({area, updateAreaSize, updateAreaPosition, del
                 }}
             >
                 <AreaTitle>
-                    {area.title}
+                    {capitalizeFirstLetter( area.title)}
                 </AreaTitle>
                 <IconButton icon="🗑️" onClick={() => deleteArea(area.id)} />
             </AreaHeader>
+            {/* this broke many things  */}
             {/* <Area
                 defaultSize={{
                     width: area.size.width,

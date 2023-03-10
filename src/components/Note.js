@@ -74,7 +74,6 @@ export default function Note ({note, deleteNote, updateNotePosition, bringNoteTo
                     style={{background: note.color}}
                     drag
                     whileDrag={{scale: 1.1, opacity: .8, shadow: 10}}
-                    
                     // stops shuffle board - I might make this toggleable because funny
                     dragMomentum={false}
                     // update the position of the note on end

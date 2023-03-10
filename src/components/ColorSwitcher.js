@@ -12,11 +12,12 @@ export default function ColorSwitcher ({currentColor, colors, setColor}) {
     const Wrapper = styled(motion.div)`
         display: flex;
         flex-direction: column;
-        gap: .5em;
     `
 
     const ButtonList = styled(motion.div)`
         display: flex;
+        position: absolute;
+        top:-1em;
         gap: .25em;
     `
 
@@ -56,7 +57,7 @@ export default function ColorSwitcher ({currentColor, colors, setColor}) {
                     </ButtonList>
                 }
             </AnimatePresence>
-            <ColorButton click={() => setShow(!show) } color={currentColor || createRainbow()} />
+                <ColorButton click={() => setShow(!show) } color={currentColor || createRainbow()} />
         </Wrapper>
     )
 }
@@ -70,6 +71,7 @@ function ColorButton ({color = 'grey', click}) {
         height: 1.5em;
         border-radius: .25em;
         background: ${color};
+        margin-top: 1em;
     `
 
     const ColorButton = styled.button`

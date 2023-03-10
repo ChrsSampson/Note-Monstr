@@ -3,7 +3,8 @@ import './App.css';
 import useLocalStorage from './lib/useLocalStorage';
 import useWindow from './lib/useWindow';
 
-import { useState } from 'react';
+import {useRef} from 'react';
+
 import styled from '@emotion/styled';
 
 import {ThemeProvider} from '@emotion/react';
@@ -25,6 +26,7 @@ const AppContainer = styled.main`
 
 function App() {
 
+  
   const [themeMode, setThemeMode] = useLocalStorage('theme', 'dark');
   // auto adjust to window size 
   const size = useWindow();
@@ -36,11 +38,19 @@ function App() {
     setThemeMode(themeMode === 'dark' ? 'light' : 'dark');
   }
 
+  const windowRef = {
+    top: 0,
+    left: 0,
+    right: widthAfterOffset,
+    bottom: heightAfterOffset
+  }
+
+
   return (
     <ThemeProvider theme={theme[themeMode]}>
       <AppContainer style={{height: heightAfterOffset, width: widthAfterOffset}} className="App">
         <Navbar changeTheme={changeTheme} themeMode={themeMode} />
-        <AppArea />
+        <AppArea  windowRef={windowRef} />
       </AppContainer>
     </ThemeProvider>
   );

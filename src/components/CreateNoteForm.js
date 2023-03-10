@@ -6,9 +6,7 @@ import { useState } from "react";
 import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
 import ColorSwitcher from "./ColorSwitcher";
-
 import {v4} from 'uuid';
-
 
 const FormGroup = styled.div`
     display: flex;
@@ -26,6 +24,8 @@ const FormInput = styled.input`
     color: ${() => useTheme().text};
     border-bottom: 1px solid ${() => useTheme().text};
     font-size: 1.25em;
+    width: 100%;
+    padding: .5em;
     placeholder: ${() => useTheme().text};
 `
 const TextArea = styled.textarea`
@@ -34,14 +34,14 @@ const TextArea = styled.textarea`
     padding: .5em;
     font-size: 1.1em;
     font-family: 'Poppins', sans-serif, monospace;
-    color: ${() => useTheme().text};
+    color: ${() => useTheme().textAreaText};
     background: ${() => useTheme().textarea};
-    color: ${() => useTheme().background};
     border-radius: 1em;
     resize: none;
+    border: none;
 `
 
-export default function CreateNoteForm ({addNote, show, cancel, colors}) {
+export default function CreateNoteForm ({addNote, cancel, colors}) {
 
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
@@ -76,10 +76,14 @@ export default function CreateNoteForm ({addNote, show, cancel, colors}) {
     }
 
     return(
-        <form>
+        <form onSubmit={(e) => handleSubmit(e)}>
             <ButtonGroup>
                 <FormGroup>
-                    <ColorSwitcher colors={colors} currentColor={colorSelected} setColor={setColorSelected} />
+                    <ColorSwitcher
+                        colors={colors}
+                        currentColor={colorSelected}
+                        setColor={setColorSelected} 
+                    />
                 </FormGroup>
                 <FormGroup>
                     <IconButton icon={"❌"} label="Cancel" onClick={cancel} />
