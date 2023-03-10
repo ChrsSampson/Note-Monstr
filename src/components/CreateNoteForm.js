@@ -5,6 +5,7 @@ import IconButton from "./IconButton";
 import { useState } from "react";
 import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
+import ColorSwitcher from "./ColorSwitcher";
 
 import {v4} from 'uuid';
 
@@ -15,7 +16,8 @@ const FormGroup = styled.div`
 `
 const ButtonGroup = styled.div`
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
 `
 
 const FormInput = styled.input`
@@ -43,7 +45,7 @@ export default function CreateNoteForm ({addNote, show, cancel, colors}) {
 
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
-    const [colorSelector, setColorSelector] = useState(null)
+    const [colorSelected, setColorSelected] = useState('')
 
     function handleSubmit(e){
         e.preventDefault()
@@ -53,7 +55,7 @@ export default function CreateNoteForm ({addNote, show, cancel, colors}) {
             title: title,
             content: content,
             area: null,
-            color: colorSelector ? colorSelector : pickRandomColor(),
+            color: colorSelected ? colorSelected : pickRandomColor(),
             z: 1,
             position: {
                 x: 200,
@@ -76,8 +78,13 @@ export default function CreateNoteForm ({addNote, show, cancel, colors}) {
     return(
         <form>
             <ButtonGroup>
-                <IconButton icon={"❌"} label="Cancel" onClick={cancel} />
-                <IconButton icon={"✅"} submit label="Looks Good" onClick={(e) => {handleSubmit(e)}} />
+                <FormGroup>
+                    <ColorSwitcher colors={colors} currentColor={colorSelected} setColor={setColorSelected} />
+                </FormGroup>
+                <FormGroup>
+                    <IconButton icon={"❌"} label="Cancel" onClick={cancel} />
+                    <IconButton icon={"✅"} submit label="Looks Good" onClick={(e) => {handleSubmit(e)}} />
+                </FormGroup>
             </ButtonGroup>
             <FormGroup>
                 <FormInput type="text" placeholder="An Awsome Title" value={title} onChange={(e) => setTitle(e.target.value)} />
@@ -85,6 +92,6 @@ export default function CreateNoteForm ({addNote, show, cancel, colors}) {
             <FormGroup>
                 <TextArea placeholder="Your literary masterpiece..." value={content} onChange={(e) => setContent(e.target.value)} />
             </FormGroup>
-        </form>
+        </form> 
     )
 }

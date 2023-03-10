@@ -34,7 +34,7 @@ const FormWrapper = styled(motion.div)`
     left: 0;
     height: auto;
     width: auto;
-    max-width: 300px;
+    max-width: 350px;
     max-height: 400px;
     padding: 1em;
     border-radius: 1em;
@@ -110,6 +110,7 @@ export default function AppArea () {
         const oldPosition = notes[id].position
         const newX = oldPosition.x + info.offset.x
         const newY = oldPosition.y + info.offset.y
+
         // move the note the end of the stack so it renders on top of other notes
         setNotes({...notes, [id]: {...notes[id], position: {x: newX, y: newY}}})
     }
@@ -145,6 +146,7 @@ export default function AppArea () {
         <>
             <NArea>
                 {/* here be notes and shit */}
+                {/* render labels */}
                 {
                     Object.values(notes).map((note) => {
                         return <Note

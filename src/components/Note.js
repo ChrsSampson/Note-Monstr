@@ -70,30 +70,30 @@ export default function Note ({note, deleteNote, updateNotePosition, bringNoteTo
     `
 
     return (
-            <NoteContainer
-                style={{background: note.color}}
-                animate={{scale: expanded ? 2 : 1, opacity: 1}}
-                drag
-                whileDrag={{scale: 1.1, opacity: .8, shadow: 10}}
-                transition={{duration: .2}}
-                // stops shuffle board - I might make this toggleable because funny
-                dragMomentum={false}
-                // update the position of the note on end
-                onDragEnd={(e, info) => updateNotePosition(note.id, info)}
-                // set the initial position of the note
-                initial={{x: note.position.x, y: note.position.y}}
-                // bring the note to the front on click
-            >
-                <NoteHeader>
-                    <NoteTitle>{note.title}</NoteTitle>
-                    <IconButton icon="🗑️" size={".75em"} onClick={() => deleteNote(note.id)}/>
-                </NoteHeader>
-                <NoteBody>
-                    {note.content}
-                </NoteBody>
-                <NoteFooter>
-                    <IconButton icon={expanded ? "↖" : "↘" } color={textAutoColor(note.color)} size={"1em"} onClick={() => setExpanded(!expanded)}/>
-                </NoteFooter>
-            </NoteContainer>
+                <NoteContainer
+                    style={{background: note.color}}
+                    drag
+                    whileDrag={{scale: 1.1, opacity: .8, shadow: 10}}
+                    
+                    // stops shuffle board - I might make this toggleable because funny
+                    dragMomentum={false}
+                    // update the position of the note on end
+                    onDragEnd={(e, info) => updateNotePosition(note.id, info)}
+                    // set the initial position of the note
+                    initial={{x: note.position.x, y: note.position.y}}
+                    transition={{duration: .4, type: "spring", stiffness: 100}}
+                    animate={{scale: expanded ? 2 : 1, opacity: 1}}
+                >
+                    <NoteHeader>
+                        <NoteTitle>{note.title}</NoteTitle>
+                        <IconButton icon="🗑️" size={".75em"} onClick={() => deleteNote(note.id)}/>
+                    </NoteHeader>
+                    <NoteBody>
+                        {note.content}
+                    </NoteBody>
+                    <NoteFooter>
+                        <IconButton icon={expanded ? "↖" : "↘" } color={textAutoColor(note.color)} size={"1em"} onClick={() => setExpanded(!expanded)}/>
+                    </NoteFooter>
+                </NoteContainer>
     )
 }
