@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 
 
 /**
- * 
+ *
  * @returns {object} - returns an object with height and width of the browser window that updates on resize
  */
 export default function useWindow() {

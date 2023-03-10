@@ -15,7 +15,7 @@ const FormGroup = styled.div`
 `
 const ButtonGroup = styled.div`
     display: flex;
-    justify-content: flex-end;    
+    justify-content: flex-end;
 `
 
 const FormInput = styled.input`
@@ -39,11 +39,11 @@ const TextArea = styled.textarea`
     resize: none;
 `
 
-export default function ({addNote, show, cancel, colors}) {
+export default function CreateNoteForm ({addNote, show, cancel, colors}) {
 
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
-    const [colorSelector, setColorSelector] = useState(pickRandomColor())
+    const [colorSelector, setColorSelector] = useState(null)
 
     function handleSubmit(e){
         e.preventDefault()
@@ -53,7 +53,7 @@ export default function ({addNote, show, cancel, colors}) {
             title: title,
             content: content,
             area: null,
-            color: colorSelector,
+            color: colorSelector ? colorSelector : pickRandomColor(),
             z: 1,
             position: {
                 x: 200,

@@ -14,6 +14,9 @@ export default function Note ({note, deleteNote, updateNotePosition, bringNoteTo
 
     const [expanded, setExpanded] = useState(false)
 
+    // convert hex to rgb
+    const rgb = note.color.match(/\w\w/g).map((hex) => parseInt(hex, 16));
+
     const NoteContainer = styled(motion.article)`
         position: absolute;
         display: flex;
@@ -33,15 +36,24 @@ export default function Note ({note, deleteNote, updateNotePosition, bringNoteTo
         justify-content: space-between;
         align-items: center;
     `
-    const NoteBody = styled.div`
+    const NoteBody = styled.p`
         display: flex;
         flex-direction: column;
         text-align: left;
         height: 100%;
+        width: 100%;
+        font-size: ${expanded ? ".4em" : ".85em"};
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: wrap;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        -moz-line-clamp: 2;
+        -moz-box-orient: vertical;
     `
 
     const NoteTitle = styled.h4`
-        font-size: 1.1em;
+        font-size: ${expanded ? ".3em" : ".9em"};
         margin: 0;
         border-bottom: 1px solid ${textAutoColor(note.color)};
         overflow: hidden;
@@ -53,10 +65,12 @@ export default function Note ({note, deleteNote, updateNotePosition, bringNoteTo
         display: flex;
         justify-content: flex-end;
         color: ${textAutoColor(note.color)};
+        // transparent top gradient
+        background: linear-gradient(rgba(255,255,255,0), rgba(rgb,1));
     `
 
     return (
-            <NoteContainer 
+            <NoteContainer
                 style={{background: note.color}}
                 animate={{scale: expanded ? 2 : 1, opacity: 1}}
                 drag

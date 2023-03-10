@@ -24,7 +24,7 @@ export default function Navbar({ changeTheme, themeMode }) {
             <TitleWrapper>
                 <Title>Note <SiMonster />onstr</Title>
             </TitleWrapper>
-            <FloatingActionButton onClick={changeTheme} icon={themeMode === 'dark' ? '🌞' : '🌙'} />
+            <FloatingActionButton onClick={changeTheme} size={"1.5em"} icon={themeMode === 'dark' ? '🌞' : '🌙'} />
         </Nav>
     )
 }
