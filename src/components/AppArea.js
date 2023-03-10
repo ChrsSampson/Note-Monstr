@@ -30,11 +30,11 @@ const BottomBar = styled.section`
 
 const FormWrapper = styled(motion.div)`
     position: fixed;
-    bottom: 20%;
+    bottom: 12%;
     left: 0;
     height: auto;
     width: auto;
-    max-width: 300px;
+    min-width: 300px;
     max-height: 400px;
     padding: 1em;
     border-radius: 1em;
@@ -73,7 +73,7 @@ const FormWrapper = styled(motion.div)`
 //         }
 //     }
 
-export default function AppArea () {
+export default function AppArea ({windowRef}) {
 
     const [notes, setNotes] = useLocalStorage('notes', {})
     const [areas, setAreas] = useLocalStorage('areas', {})
@@ -108,8 +108,19 @@ export default function AppArea () {
     // add the the amout of pixels the note moved to the old position
     function updateNotePosition(id, info) {
         const oldPosition = notes[id].position
-        const newX = oldPosition.x + info.offset.x
-        const newY = oldPosition.y + info.offset.y
+        let newX = oldPosition.x + info.offset.x
+        let newY = oldPosition.y + info.offset.y
+
+        // if the note is outside the window, move it back inside
+        // left bound
+        if (newX < 0) newX = 0
+        // top bounds
+        if (newY < 0) newY = 0
+        // right bound
+        if (newX > windowRef.right - 200) newX = windowRef.right - 250
+        // bottom bound
+        if (newY > windowRef.bottom - 200) newY = windowRef.bottom - 250
+
         // move the note the end of the stack so it renders on top of other notes
         setNotes({...notes, [id]: {...notes[id], position: {x: newX, y: newY}}})
     }
@@ -129,8 +140,19 @@ export default function AppArea () {
     // same basic thing as with notes but for areas
     function updateAreaPosition(id, info) {
         const oldPosition = areas[id].position
-        const newX = oldPosition.x + info.offset.x
-        const newY = oldPosition.y + info.offset.y
+        let newX = oldPosition.x + info.offset.x
+        let newY = oldPosition.y + info.offset.y
+
+        // if the note is outside the window, move it back inside
+        // left bound
+        if (newX < 0) newX = 0
+        // top bounds
+        if (newY < 0) newY = 0
+        // right bound
+        if (newX > windowRef.right - 200) newX = windowRef.right - 250
+        // bottom bound
+        if (newY > windowRef.bottom - 200) newY = windowRef.bottom - 250
+
         setAreas({...areas, [id]: {...areas[id], position: {x: newX, y: newY}}})
     }
 
@@ -145,6 +167,7 @@ export default function AppArea () {
         <>
             <NArea>
                 {/* here be notes and shit */}
+                {/* render labels */}
                 {
                     Object.values(notes).map((note) => {
                         return <Note
@@ -152,6 +175,7 @@ export default function AppArea () {
                             deleteNote={removeNote}
                             key={note.id}
                             updateNotePosition={updateNotePosition}
+                            windowRef={windowRef}
                             />
                     })
                 }
@@ -160,6 +184,7 @@ export default function AppArea () {
                         return <Area
                             area={area}
                             key={area.id}
+                            color={area.color}
                             deleteArea={removeArea}
                             updateAreaSize={updateAreaSize}
                             updateAreaPosition={updateAreaPosition}
@@ -168,18 +193,24 @@ export default function AppArea () {
                 }
             </NArea>
                 {/* Create Note Form */}
-                <FormWrapper animate={{
+                <FormWrapper
+                    initial={{opacity: 0, y: 300}}
+                    animate={{
                     opacity: showCreateNoteForm ? 1 : 0,
                     y: showCreateNoteForm ? 0 : 300
-                }}>
+                    }}
+                >
                     <CreateNoteForm addNote={addNote} cancel={() => setShowCreateNoteForm(false)} colors={noteColors} />
                 </FormWrapper>
                 {/* Create Area Form */}
-                <FormWrapper animate={{
+                <FormWrapper 
+                    initial={{opacity: 0, y: 300}}
+                    animate={{
                     opacity: showCreateAreaForm ? 1 : 0,
                     y: showCreateAreaForm ? 0 : 300
-                }}>
-                    <CreateAreaForm addArea={addArea} cancel={() => setShowCreateAreaForm(false)} />
+                    }}
+                >
+                    <CreateAreaForm addArea={addArea} cancel={() => setShowCreateAreaForm(false)} colors={noteColors} />
                 </FormWrapper>
             <BottomBar>
                 <FloatingActionButton icon="📝" label="New Note" onClick={() => toggleCreateNoteForm()} />

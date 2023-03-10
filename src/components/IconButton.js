@@ -9,6 +9,7 @@ export default function IconButton({icon="🍌", label, onClick, size, color}) {
     const Button = styled.button`
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     color: ${color || theme.text};
     background: none;
