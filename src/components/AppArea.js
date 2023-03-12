@@ -12,6 +12,7 @@ import CreateNoteForm from "./CreateNoteForm";
 import CreateAreaForm from "./CreateAreaForm";
 import Note from "./Note";
 import Area from "./Area";
+import About from "./About";
 
 const NArea = styled.section`
     height: 100%;
@@ -20,11 +21,12 @@ const NArea = styled.section`
 
 const BottomBar = styled.section`
     width: 100%;
+    align-items: center;
     position:fixed;
     bottom: 0;
     display: flex;
     gap: .5em;
-    justify-content: flex-start;
+    justify-content: space-between;
     padding: 1em;
 `
 
@@ -40,6 +42,12 @@ const FormWrapper = styled(motion.div)`
     border-radius: 1em;
     color: ${() => useTheme().text};
  `
+
+
+const ButtonGroup = styled.div`
+    display: flex;
+`
+
 
 // Note Structure
 // {
@@ -59,8 +67,8 @@ const FormWrapper = styled(motion.div)`
 //     id: {
 //         name: 'name',
 //         position: {
-//             x: 0,    
-//             y: 0 
+//             x: 0,
+//             y: 0
 //         },
 //         z: 1,      // z-index
 //         size: {
@@ -203,7 +211,7 @@ export default function AppArea ({windowRef}) {
                     <CreateNoteForm addNote={addNote} cancel={() => setShowCreateNoteForm(false)} colors={noteColors} />
                 </FormWrapper>
                 {/* Create Area Form */}
-                <FormWrapper 
+                <FormWrapper
                     initial={{opacity: 0, y: 300}}
                     animate={{
                     opacity: showCreateAreaForm ? 1 : 0,
@@ -213,8 +221,13 @@ export default function AppArea ({windowRef}) {
                     <CreateAreaForm addArea={addArea} cancel={() => setShowCreateAreaForm(false)} colors={noteColors} />
                 </FormWrapper>
             <BottomBar>
-                <FloatingActionButton icon="📝" label="New Note" onClick={() => toggleCreateNoteForm()} />
-                <FloatingActionButton icon="📰" label="New Label" onClick={() => toggleCreateAreaForm()} />
+                <ButtonGroup>
+                    <FloatingActionButton icon="📝" label="New Note" onClick={() => toggleCreateNoteForm()} />
+                    <FloatingActionButton icon="📰" label="New Label" onClick={() => toggleCreateAreaForm()} />
+                </ButtonGroup>
+                <ButtonGroup>
+                    <About />
+                </ButtonGroup>
             </BottomBar>
         </>
     )
