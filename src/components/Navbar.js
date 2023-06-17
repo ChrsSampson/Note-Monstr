@@ -18,13 +18,21 @@ const Title = styled.h1`
     border-bottom: 3px solid;
 `
 
-export default function Navbar({ changeTheme, themeMode }) {
+const ButtonContainer = styled.div`
+    display: flex;
+    gap: 1em;
+`
+
+export default function Navbar({ changeTheme, themeMode, toggleSettings }) {
     return (
         <Nav>
             <TitleWrapper>
                 <Title>Note <SiMonster />onstr</Title>
             </TitleWrapper>
-            <FloatingActionButton onClick={changeTheme} size={"1.5em"} icon={themeMode === 'dark' ? '🌞' : '🌙'} />
+           <ButtonContainer>
+                <FloatingActionButton size={"1.5em"} icon={'⚙️'} onClick={toggleSettings} label="Settings" />
+                <FloatingActionButton onClick={changeTheme} size={"1.5em"} icon={themeMode === 'dark' ? '🌞' : '🌙'} label="Theme" />
+            </ButtonContainer>
         </Nav>
     )
 }
