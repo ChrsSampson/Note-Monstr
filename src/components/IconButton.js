@@ -39,7 +39,7 @@ export default function IconButton({icon="🍌", label, onClick, size, color}) {
 
 
     return(
-        <Button onClick={onClick}>
+        <Button onClick={onClick} aria-label={label ? label : "icon-button"}>
             {
                 label ? <label>{label}</label> : null
             }
