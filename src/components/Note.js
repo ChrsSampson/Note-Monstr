@@ -14,9 +14,6 @@ export default function Note ({note, deleteNote, updateNotePosition, bringNoteTo
 
     const [expanded, setExpanded] = useState(false)
 
-    // convert hex to rgb
-    const rgb = note.color.match(/\w\w/g).map((hex) => parseInt(hex, 16));
-
     const NoteContainer = styled(motion.article)`
         position: absolute;
         display: flex;
