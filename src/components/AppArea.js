@@ -81,11 +81,10 @@ const ButtonGroup = styled.div`
 //         }
 //     }
 
-export default function AppArea ({windowRef}) {
+export default function AppArea ({windowRef, noteColors}) {
 
     const [notes, setNotes] = useLocalStorage('notes', {})
     const [areas, setAreas] = useLocalStorage('areas', {})
-    const [noteColors, setNoteColors] = useLocalStorage('noteColors', defaultColors)
 
     const [showCreateNoteForm, setShowCreateNoteForm] = useState(false)
     const [showCreateAreaForm, setShowCreateAreaForm] = useState(false)

@@ -8,11 +8,11 @@ import {theme} from "./theme";
 //  * @returns {string} - a hex color code
 //  */
 export default function textAutoColor(backgroundColor) {
-    // convert hex to rgb
-    const rgb = backgroundColor.match(/\w\w/g).map((hex) => parseInt(hex, 16));
-    // calculate luminance
-    const luminance = 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
 
-    // return black or white depending on luminance
-    return luminance > 127 ? theme.light.text : theme.dark.text;
+    var r = parseInt(backgroundColor.substr(1,2),16);
+	var g = parseInt(backgroundColor.substr(2,2),16);
+	var b = parseInt(backgroundColor.substr(4,2),16);
+	var yiq = ((r*299)+(g*587)+(b*114))/1000;
+	// return (yiq >= 128) ? theme["dark"].text : theme['light'].text;
+    return (yiq >= 128) ? 'black' : 'white';
 }

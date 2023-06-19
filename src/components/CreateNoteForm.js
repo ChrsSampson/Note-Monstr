@@ -5,7 +5,7 @@ import IconButton from "./IconButton";
 import { useState } from "react";
 import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
-import ColorSwitcher from "./ColorSwitcher";
+import ColorSwitcher from "./NoteColorSwitcher";
 import {v4} from 'uuid';
 
 const FormGroup = styled.div`
