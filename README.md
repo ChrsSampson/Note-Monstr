@@ -26,7 +26,7 @@ Your app is ready to be deployed!
    -  Notes can display over top of UI forms and bottom elements
 
 ## Roadmap (in no particular order):
-   -   Allow customizing of note and label colors
+   -   [x] Allow customizing of note and label colors
    -   Get a proper favicon / Revise the "logo"
    -   Migrate build tool over to Vite
    -   Allow Editing of title, notes, and labels
