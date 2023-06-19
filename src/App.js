@@ -63,7 +63,7 @@ function App() {
           <Navbar changeTheme={changeTheme} themeMode={themeMode} toggleSettings={toggleSettings} />
         <AppArea  windowRef={windowRef} noteColors={colors} />
       </AppContainer>
-      <Settings display={showSettings} setDisplay={setShowSettings} noteColors={colors} setColors={setColors} />
+      <Settings display={showSettings} setDisplay={setShowSettings} noteColors={colors} setColors={setColors} themeMode={themeMode} changeTheme={changeTheme} />
     </ThemeProvider>
   );
 }

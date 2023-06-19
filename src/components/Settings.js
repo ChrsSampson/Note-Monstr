@@ -4,12 +4,12 @@ import styled from '@emotion/styled'
 import {useTheme} from '@emotion/react'
 
 import {motion, AnimatePresence} from 'framer-motion'
-import { SliderPicker, GithubPicker } from 'react-color'
 import SettginsColorSwitcher from './SettingsColorSwitcher'
 
 import {useState} from 'react'
 
 import IconButton from './IconButton'
+import ToggleSwitch from './ToggleSwitch'
 
 const Backdrop = styled(motion.div)`
     position: fixed;
@@ -39,38 +39,20 @@ const TitleBar = styled.div`
     justify-content: space-between;
 `
 
-const ColorSection = styled.section`
+const Section = styled.section`
     display: flex;
     flex-direction: column;
     gap: .25em;
     align-items: center;
     padding:.25em;
 `
-const ColorBox = styled.div`
-    height: 2.85em;
-    width: 2em;
-    border-radius: .25em 0 0 .25em;
-`
-const ColorInputGroup = styled.div`
-    display: flex;
-    align-items: center;
-`
-const ColorInput = styled.input`
-    border:1px solid ${() => useTheme().background};
-    border-radius: 0 .25em .25em 0;
-    background: ${() => useTheme().background};
-    color: ${() => useTheme().text};
-    font-size: 1.25em;
-    width: 100%;
-    padding: .5em;
-    placeholder: ${() => useTheme().text};
-`
 
 const SectionTitle = styled.h3`
     border-bottom: 1px solid ${() => useTheme().text}};
 `
 
-export default function Settings ({display, setDisplay, noteColors, setColors}) {
+export default function Settings ({display, setDisplay, noteColors, setColors, themeMode, changeTheme}) {
+
 
 
     const colorBoxes = []
@@ -84,6 +66,11 @@ export default function Settings ({display, setDisplay, noteColors, setColors}) 
         colorBoxes.push(
             <SettginsColorSwitcher key={color} cKey={color} color={noteColors[color]} setColors={handleColorChange} />
         )
+    }
+
+    function convertThemeValueToBool (value) {
+        if(value === 'light') return false
+        if(value === 'dark') return true
     }
 
     function ChangeColor (e, key) {
@@ -117,7 +104,11 @@ export default function Settings ({display, setDisplay, noteColors, setColors}) 
                         </div>
                         <IconButton onClick={() => setDisplay(false)} icon="❌" />
                     </TitleBar>
-                    <ColorSection>
+                    <Section>
+                        <SectionTitle>Apperance</SectionTitle>
+                        <ToggleSwitch label={'Dark Mode'} value={convertThemeValueToBool(themeMode)} toggleValue={changeTheme} />
+                    </Section>
+                    <Section>
                         <div>
                             <SectionTitle>Color Picker</SectionTitle>
                             <sub>This will change the color of the notes and lables.</sub>
@@ -125,7 +116,7 @@ export default function Settings ({display, setDisplay, noteColors, setColors}) 
                         {
                             colorBoxes
                         }
-                    </ColorSection>
+                    </Section>
                 </Panel>
 
                 </Backdrop>

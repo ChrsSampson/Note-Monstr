@@ -31,7 +31,6 @@ export default function Navbar({ changeTheme, themeMode, toggleSettings }) {
             </TitleWrapper>
            <ButtonContainer>
                 <FloatingActionButton size={"1.5em"} icon={'⚙️'} onClick={toggleSettings} label="Settings" />
-                <FloatingActionButton onClick={changeTheme} size={"1.5em"} icon={themeMode === 'dark' ? '🌞' : '🌙'} label="Theme" />
             </ButtonContainer>
         </Nav>
     )
