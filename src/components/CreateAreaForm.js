@@ -3,7 +3,7 @@ import { useTheme } from "@emotion/react";
 import { useState } from "react";
 import {v4} from 'uuid';
 import IconButton from "./IconButton";
-import ColorSwitcher from "./ColorSwitcher";
+import ColorSwitcher from "./NoteColorSwitcher";
 
 const NoteArea = styled.div``
 

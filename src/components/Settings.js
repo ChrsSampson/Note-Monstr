@@ -4,6 +4,10 @@ import styled from '@emotion/styled'
 import {useTheme} from '@emotion/react'
 
 import {motion, AnimatePresence} from 'framer-motion'
+import { SliderPicker, GithubPicker } from 'react-color'
+import SettginsColorSwitcher from './SettingsColorSwitcher'
+
+import {useState} from 'react'
 
 import IconButton from './IconButton'
 
@@ -61,6 +65,7 @@ const ColorInput = styled.input`
     padding: .5em;
     placeholder: ${() => useTheme().text};
 `
+
 const SectionTitle = styled.h3`
     border-bottom: 1px solid ${() => useTheme().text}};
 `
@@ -70,16 +75,17 @@ export default function Settings ({display, setDisplay, noteColors, setColors}) 
 
     const colorBoxes = []
 
+    function handleColorChange (color, key) {
+        setColors({...noteColors, [key]: color})
+    }
+
     for (const color in noteColors) {
+
         colorBoxes.push(
-            <ColorInputGroup key={color}>
-                <ColorBox style={{background: noteColors[color]}} />
-                <ColorInput onChange={(e) => ChangeColor(e, color)} value={noteColors[color]} />
-            </ColorInputGroup>
+            <SettginsColorSwitcher key={color} cKey={color} color={noteColors[color]} setColors={handleColorChange} />
         )
     }
 
-    // TODO: Does not update Colorpicker State when colors change
     function ChangeColor (e, key) {
         // stops user from deleting # and setting no color
         if(!e.target.value) return
