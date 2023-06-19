@@ -2,7 +2,6 @@ import './App.css';
 
 import useLocalStorage from './lib/useLocalStorage';
 import useWindow from './lib/useWindow';
-import { ConfigProvider, ConfigContext } from './components/ConfigProvider';
 
 import {useContext, useState} from 'react';
 
@@ -15,6 +14,8 @@ import {useTheme} from '@emotion/react';
 import Navbar from './components/Navbar';
 import AppArea from './components/AppArea';
 import Settings from './components/Settings';
+
+import defaultColors from './lib/defaultNoteColors';
 
 const borderOffset = 16;
 
@@ -32,7 +33,7 @@ function App() {
 
   const [showSettings, setShowSettings] = useState(false);
 
-  // const [settings, setSettings] = useContext(ConfigContext);
+  const [colors, setColors] = useLocalStorage('noteColors', defaultColors);
 
   // auto adjust to window size 
   const size = useWindow();
@@ -60,9 +61,9 @@ function App() {
     <ThemeProvider theme={theme[themeMode]}>
       <AppContainer style={{height: heightAfterOffset, width: widthAfterOffset}} className="App">
           <Navbar changeTheme={changeTheme} themeMode={themeMode} toggleSettings={toggleSettings} />
-        <AppArea  windowRef={windowRef} />
+        <AppArea  windowRef={windowRef} noteColors={colors} />
       </AppContainer>
-      <Settings display={showSettings} setDisplay={setShowSettings} />
+      <Settings display={showSettings} setDisplay={setShowSettings} noteColors={colors} setColors={setColors} />
     </ThemeProvider>
   );
 }

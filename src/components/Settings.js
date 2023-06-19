@@ -5,10 +5,6 @@ import {useTheme} from '@emotion/react'
 
 import {motion, AnimatePresence} from 'framer-motion'
 
-import {useState} from 'react'
-import useLocalStorage from '../lib/useLocalStorage'
-import defaultNoteColors from '../lib/defaultNoteColors'
-
 import IconButton from './IconButton'
 
 const Backdrop = styled(motion.div)`
@@ -69,15 +65,14 @@ const SectionTitle = styled.h3`
     border-bottom: 1px solid ${() => useTheme().text}};
 `
 
-export default function Settings ({display, setDisplay}) {
+export default function Settings ({display, setDisplay, noteColors, setColors}) {
 
-    const [noteColors, setColors] = useLocalStorage('noteColors', defaultNoteColors)
 
     const colorBoxes = []
 
     for (const color in noteColors) {
         colorBoxes.push(
-            <ColorInputGroup>
+            <ColorInputGroup key={color}>
                 <ColorBox style={{background: noteColors[color]}} />
                 <ColorInput onChange={(e) => ChangeColor(e, color)} value={noteColors[color]} />
             </ColorInputGroup>
@@ -110,11 +105,17 @@ export default function Settings ({display, setDisplay}) {
                     
                 <Panel>
                     <TitleBar>
-                        <h1>Settings ⚙️</h1>
+                        <div>
+                            <h1>Settings ⚙️</h1>
+                            
+                        </div>
                         <IconButton onClick={() => setDisplay(false)} icon="❌" />
                     </TitleBar>
                     <ColorSection>
-                        <SectionTitle>Color Picker</SectionTitle>
+                        <div>
+                            <SectionTitle>Color Picker</SectionTitle>
+                            <sub>This will change the color of the notes and lables.</sub>
+                        </div>
                         {
                             colorBoxes
                         }
