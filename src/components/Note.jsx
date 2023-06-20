@@ -5,14 +5,16 @@ import { useTheme } from "@emotion/react";
 import {useState} from "react";
 import IconButton from "./IconButton";
 import textAutoColor from "../lib/textAutoColor";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import TextNoteBody from "./TextNoteBody";
 
 // Draggable cannot go here because it needs a rendered component to display
-export default function Note ({note, deleteNote, updateNotePosition, bringNoteToFront}) {
+export default function Note ({note, deleteNote, updateNotePosition, bringNoteToFront, updateNoteContents}) {
 
     const theme = useTheme()
 
     const [expanded, setExpanded] = useState(false)
+
 
     const NoteContainer = styled(motion.article)`
         position: absolute;
@@ -66,30 +68,36 @@ export default function Note ({note, deleteNote, updateNotePosition, bringNoteTo
         background: linear-gradient(rgba(255,255,255,0), rgba(rgb,1));
     `
 
+
+
+    function handleNoteUpdate(id, title, content) {
+        updateNoteContents(id, title, content)
+    }
+
+    
     return (
+        <AnimatePresence>
                 <NoteContainer
                     style={{background: note.color}}
                     drag
                     whileDrag={{scale: 1.1, opacity: .8, shadow: 10}}
+                    whileFocus={{scale: 2, shadow: 10}}
                     // stops shuffle board - I might make this toggleable because funny
                     dragMomentum={false}
                     // update the position of the note on end
                     onDragEnd={(e, info) => updateNotePosition(note.id, info)}
                     // set the initial position of the note
                     initial={{x: note.position.x, y: note.position.y}}
-                    transition={{duration: .4, type: "spring", stiffness: 100}}
+                    transition={{duration: .4, type: "spring", stiffness: 500, damping: 30}}
                     animate={{scale: expanded ? 2 : 1, opacity: 1}}
+                    exit={{opacity: 0}}
                 >
-                    <NoteHeader>
-                        <NoteTitle>{note.title}</NoteTitle>
-                        <IconButton icon="🗑️" size={".75em"} onClick={() => deleteNote(note.id)}/>
-                    </NoteHeader>
-                    <NoteBody>
-                        {note.content}
-                    </NoteBody>
+                    <TextNoteBody color={note.color} expanded={expanded} title={note.title} body={note.content} id={note.id} deleteNote={deleteNote} />
                     <NoteFooter>
+                        {expanded && <IconButton icon="💾" size={".75em"} onClick={() => handleNoteUpdate(note.id, noteTitle, noteBody)}/> }
                         <IconButton icon={expanded ? "↖" : "↘" } color={textAutoColor(note.color)} size={"1em"} onClick={() => setExpanded(!expanded)}/>
                     </NoteFooter>
                 </NoteContainer>
+            </AnimatePresence>
     )
 }
