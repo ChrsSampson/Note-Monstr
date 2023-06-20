@@ -132,6 +132,15 @@ export default function AppArea ({windowRef, noteColors}) {
         setNotes({...notes, [id]: {...notes[id], position: {x: newX, y: newY}}})
     }
 
+    function updateNoteContents (id, noteTitle, noteContents) {
+
+        const oldNotes = {...notes}
+        oldNotes[id].title = noteTitle
+        oldNotes[id].content = noteContents
+
+        setNotes({...oldNotes})
+    }
+
     // ---------------- methods for managing areas ----------------
 
     function addArea (id, data) {
@@ -182,6 +191,7 @@ export default function AppArea ({windowRef, noteColors}) {
                             deleteNote={removeNote}
                             key={note.id}
                             updateNotePosition={updateNotePosition}
+                            updateNoteContents={updateNoteContents}
                             windowRef={windowRef}
                             />
                     })
