@@ -72,6 +72,7 @@ export default function Note ({note, deleteNote, updateNotePosition, bringNoteTo
 
     function handleNoteUpdate(id, title, content) {
         updateNoteContents(id, title, content)
+        setExpanded(false)
     }
 
     
@@ -92,11 +93,16 @@ export default function Note ({note, deleteNote, updateNotePosition, bringNoteTo
                     animate={{scale: expanded ? 2 : 1, opacity: 1}}
                     exit={{opacity: 0}}
                 >
-                    <TextNoteBody color={note.color} expanded={expanded} title={note.title} body={note.content} id={note.id} deleteNote={deleteNote} />
-                    <NoteFooter>
-                        {expanded && <IconButton icon="💾" size={".75em"} onClick={() => handleNoteUpdate(note.id, noteTitle, noteBody)}/> }
-                        <IconButton icon={expanded ? "↖" : "↘" } color={textAutoColor(note.color)} size={"1em"} onClick={() => setExpanded(!expanded)}/>
-                    </NoteFooter>
+                    <TextNoteBody
+                        color={note.color}
+                        expanded={expanded}
+                        setExpanded={setExpanded}
+                        title={note.title}
+                        body={note.content}
+                        id={note.id}
+                        deleteNote={deleteNote}
+                        handleNoteUpdate={handleNoteUpdate}
+                        />
                 </NoteContainer>
             </AnimatePresence>
     )
