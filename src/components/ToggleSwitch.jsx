@@ -28,8 +28,8 @@ const SwitchContainer= styled.div`
 `
 
 const Icon = styled(motion.div)`
-    height: 3em;
-    width: 3em;
+    display: grid;
+    place-items: center;
     font-size: 2.15em;
 `
 
@@ -43,7 +43,7 @@ export default function Switch({value, toggleValue, label}) {
                     drag="x"
                     initial={{x: value ? '5em' : '0em'}}
                     dragConstraints={{left: 0, right: 100}}
-                    animate={{x: value ? '5em' : '0em', rotate: value ? 360 : 0}}
+                    animate={{x: value ? '5em' : '0em'}}
                     transition={{duration: .25}}
                 >
                     {value ? <Icon>🌚</Icon> : <Icon>🌞</Icon>}
