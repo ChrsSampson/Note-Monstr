@@ -28,8 +28,8 @@ Your app is ready to be deployed!
 ## Roadmap (in no particular order):
    -   [x] Allow customizing of note and label colors
    -   Get a proper favicon / Revise the "logo"
-   -   Migrate build tool over to Vite
-   -   Allow Editing of title, notes, and labels
+   -   [x] Migrate build tool over to Vite
+   -   [x] Allow Editing of title, notes, and labels
    -   Allow for mini task lists inside of notes 
    -   Allow user to create multiple boards
    -   Allow user to add intelligent external links with auto formatting
