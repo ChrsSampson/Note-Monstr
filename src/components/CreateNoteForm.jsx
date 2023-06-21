@@ -1,5 +1,4 @@
-
-// create new note form
+// DEPRIECATED
 
 import IconButton from "./IconButton";
 import { useState } from "react";

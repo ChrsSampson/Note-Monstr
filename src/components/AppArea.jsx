@@ -5,7 +5,7 @@ import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
 import { useState } from "react";
 import defaultColors from "../lib/defaultNoteColors";
-import {motion} from "framer-motion";
+import {AnimatePresence, motion} from "framer-motion";
 
 import FloatingActionButton from "./FloatingActionButton";
 import CreateNoteForm from "./CreateNoteForm";
@@ -13,6 +13,9 @@ import CreateAreaForm from "./CreateAreaForm";
 import Note from "./Note";
 import Area from "./Area";
 import About from "./About";
+
+import CreateForm from "./CreateForm";
+
 
 const NArea = styled.section`
     height: 100%;
@@ -85,19 +88,30 @@ export default function AppArea ({windowRef, noteColors}) {
 
     const [notes, setNotes] = useLocalStorage('notes', {})
     const [areas, setAreas] = useLocalStorage('areas', {})
+    const [labels, setLabels] = useLocalStorage('labels', {})
 
     const [showCreateNoteForm, setShowCreateNoteForm] = useState(false)
     const [showCreateAreaForm, setShowCreateAreaForm] = useState(false)
+    const [showCreateLabelForm, setShowCreateLabelForm] = useState(false)
 
     // only one form can be shown at a time
     function toggleCreateNoteForm () {
         setShowCreateNoteForm(!showCreateNoteForm)
-        setShowCreateAreaForm(false)
+        if(showCreateAreaForm) setShowCreateAreaForm(false)
+        if(showCreateLabelForm) setShowCreateLabelForm(false)
     }
 
     function toggleCreateAreaForm () {
         setShowCreateAreaForm(!showCreateAreaForm)
-        setShowCreateNoteForm(false)
+        if(showCreateNoteForm) setShowCreateNoteForm(false)
+        if(showCreateLabelForm) setShowCreateLabelForm(false)
+    }
+
+    function toggleCreateLabelForm () {
+        setShowCreateLabelForm(!showCreateLabelForm)
+        if(showCreateNoteForm) setShowCreateNoteForm(false)
+        if(showCreateAreaForm) setShowCreateAreaForm(false)
+
     }
 
     // ---------------- methods for managing notes ----------------
@@ -179,12 +193,15 @@ export default function AppArea ({windowRef, noteColors}) {
         setAreas({...areas, [id]: {...areas[id], size: {width: info.width, height: info.height}}})
     }
 
+    // ---------------- Methods for Managing Labels ----------------
+
     return (
         <>
             <NArea>
                 {/* here be notes and shit */}
                 {/* render labels */}
                 {
+                    Object.values(notes) &&
                     Object.values(notes).map((note) => {
                         return <Note
                             note={note}
@@ -197,6 +214,7 @@ export default function AppArea ({windowRef, noteColors}) {
                     })
                 }
                 {
+                    Object.values(areas) &&
                     Object.values(areas).map((area) => {
                         return <Area
                             area={area}
@@ -209,7 +227,37 @@ export default function AppArea ({windowRef, noteColors}) {
                     })
                 }
             </NArea>
-                {/* Create Note Form */}
+                {/* Refactored Form */}
+                 <AnimatePresence>
+                    {
+                        showCreateNoteForm &&
+                        <FormWrapper
+                            initial={{y: 400}}
+                            animate={{y: 0}}
+                            transition={{duration: .5, type: 'spring', bounce: .5}}
+                            exit={{y: 400}}
+                        >
+                            <CreateForm type={'note'} cancel={() => setShowCreateNoteForm(false)} handleSubmit={addNote} colors={noteColors}  />
+                        </FormWrapper>
+                    }
+                </AnimatePresence>
+
+                <AnimatePresence>
+                    {
+                        showCreateLabelForm &&
+                        <FormWrapper
+                            initial={{y: 400}}
+                            animate={{y: 0}}
+                            transition={{duration: .5, type: 'spring', bounce: .5}}
+                            exit={{y: 400}}
+                        >
+                            <CreateForm type={'label'} cancel={toggleCreateLabelForm} handleSubmit={addNote} colors={noteColors}  />
+                        </FormWrapper>
+                    }
+                </AnimatePresence>
+
+                {/* ----------------- */}
+                {/* Create Note Form
                 <FormWrapper
                     initial={{opacity: 0, y: 300}}
                     animate={{
@@ -218,8 +266,8 @@ export default function AppArea ({windowRef, noteColors}) {
                     }}
                 >
                     <CreateNoteForm addNote={addNote} cancel={() => setShowCreateNoteForm(false)} colors={noteColors} />
-                </FormWrapper>
-                {/* Create Area Form */}
+                </FormWrapper> */}
+                {/* Create Area Form
                 <FormWrapper
                     initial={{opacity: 0, y: 300}}
                     animate={{
@@ -228,11 +276,11 @@ export default function AppArea ({windowRef, noteColors}) {
                     }}
                 >
                     <CreateAreaForm addArea={addArea} cancel={() => setShowCreateAreaForm(false)} colors={noteColors} />
-                </FormWrapper>
+                </FormWrapper> */}
             <BottomBar>
                 <ButtonGroup>
-                    <FloatingActionButton icon="📝" label="New Note" onClick={() => toggleCreateNoteForm()} />
-                    <FloatingActionButton icon="📰" label="New Label" onClick={() => toggleCreateAreaForm()} />
+                    <FloatingActionButton icon="📝" label="New Text Note" onClick={() => toggleCreateNoteForm()} />
+                    <FloatingActionButton icon="📰" label="New Label" onClick={() => toggleCreateLabelForm()} />
                 </ButtonGroup>
                 <ButtonGroup>
                     <About />

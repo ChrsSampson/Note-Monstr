@@ -1,3 +1,5 @@
+// DEPRIECATED
+
 import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
 import { useState } from "react";
