@@ -3,7 +3,7 @@ import './App.css';
 import useLocalStorage from './lib/useLocalStorage';
 import useWindow from './lib/useWindow';
 
-import {useContext, useState} from 'react';
+import {useState} from 'react';
 
 import styled from '@emotion/styled';
 

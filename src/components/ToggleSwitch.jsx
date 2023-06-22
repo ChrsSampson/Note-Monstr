@@ -18,6 +18,7 @@ const Knob = styled(motion.div)`
     width: 3em;
     background: ${() => useTheme().text};
     border-radius: 50%;
+    cursor: pointer;
 `
 const SwitchContainer= styled.div`
     display: 'flex';
@@ -40,7 +41,6 @@ export default function Switch({value, toggleValue, label}) {
         <SwitchContainer>
             <SwitchWrapper id={label} onClick={toggleValue}>
                 <Knob
-                    drag="x"
                     initial={{x: value ? '5em' : '0em'}}
                     dragConstraints={{left: 0, right: 100}}
                     animate={{x: value ? '5em' : '0em'}}
