@@ -34,5 +34,6 @@ Your app is ready to be deployed!
    -   Allow user to create multiple boards
    -   Allow user to add intelligent external links with auto formatting
    -   Alternate UI themes - additional presets at minimium, possibly user customizable
-   -  Additional Note Types - Images, Videos, Audio, etc
+   -   Additional Note Types - Images, Videos, Audio, etc
+   -   Refactor Forms and Components to be more DRY
 
