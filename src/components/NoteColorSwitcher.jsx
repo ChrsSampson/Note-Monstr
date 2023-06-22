@@ -38,13 +38,13 @@ export default function ColorSwitcher ({currentColor, colors, setColor}) {
     // on hover reveal the other options 
     return (
         <Wrapper>
-            {/* waits for component to do animation before unmount */}
             <AnimatePresence>
                 {show &&
                     <ButtonList 
                         key={'ColorPickerButtonList'}
-                        initial={{opacity: 0, y: -0}}
+                        initial={{opacity: 0, y: 20}}
                         animate={{opacity: 1, y: 0}}
+                        transition={{duration: .5, type: 'spring', bounce: .5}}
                         exit={{opacity: 0, y: -20}}
                     >
                         {

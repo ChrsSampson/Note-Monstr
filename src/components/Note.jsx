@@ -15,7 +15,6 @@ export default function Note ({note, deleteNote, updateNotePosition, bringNoteTo
 
     const [expanded, setExpanded] = useState(false)
 
-
     const NoteContainer = styled(motion.article)`
         position: absolute;
         display: flex;
@@ -27,6 +26,7 @@ export default function Note ({note, deleteNote, updateNotePosition, bringNoteTo
         color: ${textAutoColor(note.color)};
         box-shadow: 1px 1px 7px 3px ${theme.shadow};
         z-index: ${note.z};
+        cursor: grab;
     `
 
     const NoteHeader = styled.div`
@@ -68,8 +68,6 @@ export default function Note ({note, deleteNote, updateNotePosition, bringNoteTo
         background: linear-gradient(rgba(255,255,255,0), rgba(rgb,1));
     `
 
-
-
     function handleNoteUpdate(id, title, content) {
         updateNoteContents(id, title, content)
         setExpanded(false)
@@ -102,7 +100,7 @@ export default function Note ({note, deleteNote, updateNotePosition, bringNoteTo
                         id={note.id}
                         deleteNote={deleteNote}
                         handleNoteUpdate={handleNoteUpdate}
-                        />
+                    />
                 </NoteContainer>
             </AnimatePresence>
     )

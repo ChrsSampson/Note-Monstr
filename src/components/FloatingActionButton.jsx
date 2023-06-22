@@ -12,7 +12,7 @@ const FAB = styled.button`
     border: none;
     width: 3.5rem;
     height: 3.5rem;
-    z-index: 99;
+    z-index: 100;
     transition: 0.5s cubic-bezier(.56,-0.09,.55,1.25);
     &:hover{
         cursor: pointer;

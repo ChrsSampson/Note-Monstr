@@ -12,8 +12,6 @@ import randomPlaceholder from '../lib/placeholderGenerator'
 
 const placeholderFunction = () => console.warn('You Forgot your submit handler!')
 
-// const textPlaceholder = randomPlaceholder('text')
-// const textAreaPlaceholder = randomPlaceholder('textarea')
 
 /**
  * 
@@ -33,7 +31,6 @@ export default function CreateForm ({type, colors, handleSubmit=placeholderFunct
     const [textPlaceholder, setTextPlaceholder] = useState(randomPlaceholder('text'))
     const [textAreaPlaceholder, setTextAreaPlaceholder] = useState(randomPlaceholder('textarea'))
 
-    // generate a quote only one mount and unmount
     useEffect(() => {
         setTextPlaceholder(randomPlaceholder('text'))
         setTextAreaPlaceholder(randomPlaceholder('textarea'))
@@ -50,7 +47,7 @@ export default function CreateForm ({type, colors, handleSubmit=placeholderFunct
             color: color ? color : pickRandomColor(),
         }
 
-        handleSubmit()
+        handleSubmit(data.id, data)
     }
 
     function handleCancel (e) {
@@ -67,10 +64,12 @@ export default function CreateForm ({type, colors, handleSubmit=placeholderFunct
     const inputStyle = {
         color: theme.text,
         background: theme.textarea,
+        borderRadius: '.25em .25em 0 0',
+        border: '2px',
         borderBottom: `2px solid ${theme.text}`,
-        borderRadius: '.25em',
         fontSize: '1.25em',
         width: '100%',
+        padding: '.25em',
     }
 
     const inputFieldGroup = {
@@ -82,12 +81,15 @@ export default function CreateForm ({type, colors, handleSubmit=placeholderFunct
 
     const textAreaStyle = {
         background: theme.textarea,
-        color: theme.textareaText,
+        color: theme.textAreaText,
         borderRadius: '.25em',
+        border: `1px solid ${theme.textarea}`,
+        fontFamily: 'inherit',
         width: '100%',
-        fontSize: '1.25em',
+        fontSize: '1.1em',
         resize: 'none',
         height: '9em',
+        padding: '.25em',
     }
 
     const formHeaderStyle = {
@@ -101,7 +103,6 @@ export default function CreateForm ({type, colors, handleSubmit=placeholderFunct
         gap: '.5em',
     }
 
-    // this will pick a random color if the color state does not change
     function pickRandomColor(){
         const c = Object.values(colors)
         const random = Math.floor(Math.random() * c.length)
@@ -137,15 +138,23 @@ export default function CreateForm ({type, colors, handleSubmit=placeholderFunct
     </form>
 
     const LabelTextForm = 
-    <form onSubmit={handleSubmit} >
-        <ColorSwitcher currentColor={color} colors={colors} setColor={setColor} />
-        <input
-            style={inputStyle}
-            placeholder={textPlaceholder}
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-        />
+    <form style={noteFormStyle} onSubmit={handleSubmit} >
+        <div style={formHeaderStyle}>
+            <ColorSwitcher currentColor={color} colors={colors} setColor={setColor} />
+            <div style={formButtons}>
+                    <IconButton icon='❌' onClick={(e) => handleCancel(e)} />
+                    <IconButton icon='✅' submit onClick={submitHandler} />
+            </div>
+        </div>
+        <div style={inputFieldGroup}>
+            <input
+                style={inputStyle}
+                placeholder={textPlaceholder}
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+            />
+        </div>
     </form>
 
     // TODO - Add Area Form

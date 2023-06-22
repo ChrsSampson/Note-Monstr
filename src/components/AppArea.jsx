@@ -8,11 +8,10 @@ import defaultColors from "../lib/defaultNoteColors";
 import {AnimatePresence, motion} from "framer-motion";
 
 import FloatingActionButton from "./FloatingActionButton";
-import CreateNoteForm from "./CreateNoteForm";
-import CreateAreaForm from "./CreateAreaForm";
 import Note from "./Note";
 import Area from "./Area";
 import About from "./About";
+import Label from "./Label";
 
 import CreateForm from "./CreateForm";
 
@@ -117,7 +116,28 @@ export default function AppArea ({windowRef, noteColors}) {
     // ---------------- methods for managing notes ----------------
 
     function addNote (id, data) {
-        setNotes({...notes, [id]: data})
+
+        // random position for the note within the window
+        const defaultPosition = {
+            x: Math.floor(Math.random() * (windowRef.right - 300)),
+            y: Math.floor(Math.random() * (windowRef.bottom - 300))
+        }
+
+        const defaultSize = {
+            width: 200,
+            height: 200
+        }
+
+        const newNoteData = {
+            id: data.id,
+            title: data.title, 
+            content: data.body, 
+            position: defaultPosition, 
+            size: defaultSize,
+            color: data.color,
+        }
+
+        setNotes({...notes, [id]: newNoteData})
     }
 
     function removeNote (id) {
@@ -195,13 +215,53 @@ export default function AppArea ({windowRef, noteColors}) {
 
     // ---------------- Methods for Managing Labels ----------------
 
+    function addLabel (id, data) {
+        // random position for the note within the window
+        const defaultPosition = {
+            x: Math.floor(Math.random() * (windowRef.right - 300)),
+            y: Math.floor(Math.random() * (windowRef.bottom - 300))
+        }
+
+        const newLabelData = {
+            id: data.id,
+            title: data.title, 
+            position: defaultPosition, 
+            color: data.color,
+        }
+
+        setLabels({...labels, [id]: newLabelData})
+    }
+
+    function removeLabel (id) {
+        const newLabels = {...labels}
+        delete newLabels[id]
+        setLabels(newLabels)
+    }
+
+    function updateLabelPosition (id, info) {
+        const oldPosition = labels[id].position
+        let newX = oldPosition.x + info.offset.x
+        let newY = oldPosition.y + info.offset.y
+
+        // if the note is outside the window, move it back inside
+        // left bound
+        if (newX < 0) newX = 0
+        // top bounds
+        if (newY < 0) newY = 0
+        // right bound
+        if (newX > windowRef.right - 200) newX = windowRef.right - 250
+        // bottom bound
+        if (newY > windowRef.bottom - 200) newY = windowRef.bottom - 250
+
+        setLabels({...labels, [id]: {...labels[id], position: {x: newX, y: newY}}})
+    }
+
     return (
         <>
             <NArea>
                 {/* here be notes and shit */}
                 {/* render labels */}
                 {
-                    Object.values(notes) &&
                     Object.values(notes).map((note) => {
                         return <Note
                             note={note}
@@ -209,11 +269,21 @@ export default function AppArea ({windowRef, noteColors}) {
                             key={note.id}
                             updateNotePosition={updateNotePosition}
                             updateNoteContents={updateNoteContents}
-                            windowRef={windowRef}
                             />
                     })
                 }
                 {
+                    Object.values(labels).map((label) => {
+                        return <Label
+                            key={label.id}
+                            label={label}
+                            color={label.color}
+                            remove={removeLabel}
+                            updatePosition={updateLabelPosition}
+                        />
+                    })
+                }
+                {/* {
                     Object.values(areas) &&
                     Object.values(areas).map((area) => {
                         return <Area
@@ -225,7 +295,8 @@ export default function AppArea ({windowRef, noteColors}) {
                             updateAreaPosition={updateAreaPosition}
                             />
                     })
-                }
+                } */}
+                
             </NArea>
                 {/* Refactored Form */}
                  <AnimatePresence>
@@ -251,7 +322,7 @@ export default function AppArea ({windowRef, noteColors}) {
                             transition={{duration: .5, type: 'spring', bounce: .5}}
                             exit={{y: 400}}
                         >
-                            <CreateForm type={'label'} cancel={toggleCreateLabelForm} handleSubmit={addNote} colors={noteColors}  />
+                            <CreateForm type={'label'} cancel={toggleCreateLabelForm} handleSubmit={addLabel} colors={noteColors}  />
                         </FormWrapper>
                     }
                 </AnimatePresence>
