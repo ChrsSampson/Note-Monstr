@@ -19,11 +19,11 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 ## Known Issues:
-   -  Label or label text should scale for larger strings
+   -  [x] Label or label text should scale for larger strings
    -  Clicking or dragging a note or title should bring it to the front
    -  Resizing can cause existing notes to become unreachable
    -  Low Y width windows cause to UI to overlap onto itself
-   -  Notes can display over top of UI forms and bottom elements
+   -  [x] Notes can display over top of UI forms and bottom elements
 
 ## Roadmap (in no particular order):
    -   [x] Allow customizing of note and label colors
@@ -35,5 +35,5 @@ Your app is ready to be deployed!
    -   Allow user to add intelligent external links with auto formatting
    -   Alternate UI themes - additional presets at minimium, possibly user customizable
    -   Additional Note Types - Images, Videos, Audio, etc
-   -   Refactor Forms and Components to be more DRY
+   -   [x] Refactor Forms and Components to be more DRY
 
