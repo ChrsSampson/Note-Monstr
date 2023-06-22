@@ -10,7 +10,7 @@ import IconButton from "./IconButton";
 import textAutoColor from "../lib/textAutoColor";
 
 
-export default function NoteArea ({area, updateAreaSize, updateAreaPosition, deleteArea, color}) {
+export default function NoteArea ({id, title, size, position, updateAreaSize, updateAreaPosition, deleteArea, color}) {
 
     const dragControls = useDragControls();
     const theme = useTheme();
@@ -61,8 +61,8 @@ export default function NoteArea ({area, updateAreaSize, updateAreaPosition, del
             transition={{duration: .2}}
             dragControls={dragControls}
             dragMomentum={false}
-            onDragEnd={(e, info) => updateAreaPosition(area.id, info)}
-            initial={{x: area.position.x, y: area.position.y, height: area.size.height, width: area.size.width}}
+            onDragEnd={(e, info) => updateAreaPosition(id, info)}
+            initial={{x: position.x, y: position.y, height: size.height, width: size.width}}
         >
             <AreaHeader
                 className="drag-handle"
@@ -71,19 +71,19 @@ export default function NoteArea ({area, updateAreaSize, updateAreaPosition, del
                 }}
             >
                 <AreaTitle>
-                    {capitalizeFirstLetter( area.title)}
+                    {capitalizeFirstLetter(title)}
                 </AreaTitle>
-                <IconButton icon="🗑️" onClick={() => deleteArea(area.id)} />
+                <IconButton icon="🗑️" onClick={() => deleteArea(id)} />
             </AreaHeader>
             {/* this broke many things  */}
-            {/* <Area
+            <Area
                 defaultSize={{
-                    width: area.size.width,
-                    height: area.size.height
+                    width: size.width,
+                    height: size.height
                 }}
-                onResizeStop={(e, direction, ref, d) => updateAreaSize(area.id, d)}
+                onResizeStop={(e, direction, ref, d) => updateAreaSize(id, d)}
             >
-            </Area> */}
+            </Area>
         </AreaWrapper>
     )
     

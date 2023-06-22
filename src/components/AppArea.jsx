@@ -178,7 +178,25 @@ export default function AppArea ({windowRef, noteColors}) {
     // ---------------- methods for managing areas ----------------
 
     function addArea (id, data) {
-        setAreas({...areas, [id]: data})
+
+        // random position for the Area within the window
+        const defaultPosition = {
+            x: Math.floor(Math.random() * (windowRef.right - 300)),
+            y: Math.floor(Math.random() * (windowRef.bottom - 300))
+        }
+
+        const newAreaData = {
+            id: data.id,
+            title: data.title,
+            position: defaultPosition,
+            size: {
+                width: 200,
+                height: 200
+            }
+        }
+
+
+        setAreas({...areas, [id]: {...newAreaData}})
     }
 
     function removeArea (id) {
@@ -283,19 +301,21 @@ export default function AppArea ({windowRef, noteColors}) {
                         />
                     })
                 }
-                {/* {
+                {
                     Object.values(areas) &&
                     Object.values(areas).map((area) => {
                         return <Area
-                            area={area}
                             key={area.id}
+                            title={area.title}
                             color={area.color}
+                            position={area.position}
+                            size={area.size}
                             deleteArea={removeArea}
                             updateAreaSize={updateAreaSize}
                             updateAreaPosition={updateAreaPosition}
                             />
                     })
-                } */}
+                }
                 
             </NArea>
                 {/* Refactored Form */}
@@ -322,36 +342,41 @@ export default function AppArea ({windowRef, noteColors}) {
                             transition={{duration: .5, type: 'spring', bounce: .5}}
                             exit={{y: 400}}
                         >
-                            <CreateForm type={'label'} cancel={toggleCreateLabelForm} handleSubmit={addLabel} colors={noteColors}  />
+                            <CreateForm type='label' cancel={toggleCreateLabelForm} handleSubmit={addLabel} colors={noteColors}  />
+                        </FormWrapper>
+                    }
+                </AnimatePresence>
+                <AnimatePresence>
+                    {
+                        showCreateAreaForm &&
+                        <FormWrapper
+                            initial={{y: 400}}
+                            animate={{y: 0}}
+                            transition={{duration: .5, type: 'spring', bounce: .5}}
+                            exit={{y: 400}}
+                        >
+                            <CreateForm type='area' cancel={toggleCreateLabelForm} handleSubmit={addArea} colors={noteColors}  />
                         </FormWrapper>
                     }
                 </AnimatePresence>
 
                 {/* ----------------- */}
-                {/* Create Note Form
-                <FormWrapper
-                    initial={{opacity: 0, y: 300}}
-                    animate={{
-                    opacity: showCreateNoteForm ? 1 : 0,
-                    y: showCreateNoteForm ? 0 : 300
-                    }}
-                >
-                    <CreateNoteForm addNote={addNote} cancel={() => setShowCreateNoteForm(false)} colors={noteColors} />
-                </FormWrapper> */}
-                {/* Create Area Form
-                <FormWrapper
+            
+                {/* <FormWrapper
                     initial={{opacity: 0, y: 300}}
                     animate={{
                     opacity: showCreateAreaForm ? 1 : 0,
                     y: showCreateAreaForm ? 0 : 300
                     }}
                 >
-                    <CreateAreaForm addArea={addArea} cancel={() => setShowCreateAreaForm(false)} colors={noteColors} />
+                    <CreateForm addArea={addArea} type="area" cancel={() => setShowCreateAreaForm(false)} colors={noteColors} />
                 </FormWrapper> */}
+
             <BottomBar>
                 <ButtonGroup>
                     <FloatingActionButton icon="📝" label="New Text Note" onClick={() => toggleCreateNoteForm()} />
                     <FloatingActionButton icon="📰" label="New Label" onClick={() => toggleCreateLabelForm()} />
+                    <FloatingActionButton icon="🔲" label="New Area" onClick={() => toggleCreateAreaForm()} />
                 </ButtonGroup>
                 <ButtonGroup>
                     <About />

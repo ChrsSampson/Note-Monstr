@@ -42,8 +42,8 @@ export default function CreateForm ({type, colors, handleSubmit=placeholderFunct
         // bundle up the data
         const data = {
             id: v4(),
-            title: title,
-            body: body,
+            title: title || 'Untitled',
+            body: body || '',
             color: color ? color : pickRandomColor(),
         }
 
@@ -164,6 +164,8 @@ export default function CreateForm ({type, colors, handleSubmit=placeholderFunct
         default:
             return TextNoteForm
         case 'label':
+            return LabelTextForm
+        case 'area':
             return LabelTextForm
     }
 }
