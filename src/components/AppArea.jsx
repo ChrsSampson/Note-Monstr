@@ -15,7 +15,6 @@ import Label from "./Label";
 
 import CreateForm from "./CreateForm";
 
-
 const NArea = styled.section`
     height: 100%;
     display: grid;
@@ -45,11 +44,9 @@ const FormWrapper = styled(motion.div)`
     color: ${() => useTheme().text};
  `
 
-
 const ButtonGroup = styled.div`
     display: flex;
 `
-
 
 // Note Structure
 // {
@@ -110,8 +107,9 @@ export default function AppArea ({windowRef, noteColors}) {
         setShowCreateLabelForm(!showCreateLabelForm)
         if(showCreateNoteForm) setShowCreateNoteForm(false)
         if(showCreateAreaForm) setShowCreateAreaForm(false)
-
     }
+
+    // TODO create a class for managing localStorage Items for future pub/sub system
 
     // ---------------- methods for managing notes ----------------
 
@@ -189,6 +187,7 @@ export default function AppArea ({windowRef, noteColors}) {
             id: data.id,
             title: data.title,
             position: defaultPosition,
+            color: data.color,
             size: {
                 width: 200,
                 height: 200
@@ -225,10 +224,13 @@ export default function AppArea ({windowRef, noteColors}) {
     }
 
     // same thing as before but altering height and width instead of x and y
-    function updateAreaSize(id, info) {
-        // info = {height 0, width: 0}
-        console.log("resize", info)
-        setAreas({...areas, [id]: {...areas[id], size: {width: info.width, height: info.height}}})
+    function updateAreaSize(id, adjustments) {
+        const newWidth = areas[id].size.width + adjustments.width
+        const newHeight = areas[id].size.height + adjustments.height
+
+        // console.log(newWidth, newHeight)
+
+        setAreas({...areas, [id]: {...areas[id], size: {width: newWidth, height: newHeight }}})
     }
 
     // ---------------- Methods for Managing Labels ----------------
@@ -306,6 +308,7 @@ export default function AppArea ({windowRef, noteColors}) {
                     Object.values(areas).map((area) => {
                         return <Area
                             key={area.id}
+                            id={area.id}
                             title={area.title}
                             color={area.color}
                             position={area.position}
@@ -313,10 +316,9 @@ export default function AppArea ({windowRef, noteColors}) {
                             deleteArea={removeArea}
                             updateAreaSize={updateAreaSize}
                             updateAreaPosition={updateAreaPosition}
-                            />
+                        />
                     })
                 }
-                
             </NArea>
                 {/* Refactored Form */}
                  <AnimatePresence>

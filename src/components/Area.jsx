@@ -20,14 +20,15 @@ export default function NoteArea ({id, title, size, position, updateAreaSize, up
     justify-content: space-between;
     padding: 0.25em .5em;
     align-items: center;
-    min-width: 100%;
+    width: ${size.width}px;
     min-height: 100%
     color: ${textAutoColor(color || theme.background)};
     border: 2px solid ${theme.text};
-    background: ${color || theme.text};
+    background: ${color};
     cursor: grab;
-    border-radius: .5em
-`
+    border-radius: .5em .5em 0 0;
+    `
+
     const AreaTitle = styled.h4`
         font-size: 1.6em;
         margin: 0;
@@ -46,6 +47,7 @@ export default function NoteArea ({id, title, size, position, updateAreaSize, up
     `
 
     const Area = styled(Resizable)`
+        background: ${theme.textarea};
         border: 1px solid ${theme.text};
         border-radius:  0 0 .5em .5em;
     `
@@ -77,10 +79,11 @@ export default function NoteArea ({id, title, size, position, updateAreaSize, up
             </AreaHeader>
             {/* this broke many things  */}
             <Area
-                defaultSize={{
+                size={{
                     width: size.width,
                     height: size.height
                 }}
+                onResize={() => console.log('resize')}
                 onResizeStop={(e, direction, ref, d) => updateAreaSize(id, d)}
             >
             </Area>
