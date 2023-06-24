@@ -40,6 +40,8 @@ export default function NoteArea ({id, title, size, position, updateAreaSize, up
 
     const AreaWrapper = styled(motion.div)`
         position: absolute;
+        top: -3em;
+        left: -.25em;
         display: flex;
         flex-direction: column;
         background: transparent;
@@ -50,44 +52,71 @@ export default function NoteArea ({id, title, size, position, updateAreaSize, up
         background: ${theme.textarea};
         border: 1px solid ${theme.text};
         border-radius:  0 0 .5em .5em;
+        z-index: 2;
     `
 
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
+    function startDrag (event) {
+        if(event.target.id === 'drag-handle'){
+            dragControls.start(event)
+            // console.log(event.target)
+        }
+    }
+
+    function stopDrag (event) {
+        dragControls.stop(event)
+    }
+
     return(
-        <AreaWrapper
+        <motion.div
             drag
-            whileDrag={{scale: 1.1, opacity: .8, shadow: 10}}
-            transition={{duration: .2}}
-            dragControls={dragControls}
-            dragMomentum={false}
-            onDragEnd={(e, info) => updateAreaPosition(id, info)}
             initial={{x: position.x, y: position.y, height: size.height, width: size.width}}
+            dragMomentum={false}
+            transition={{duration: .2}}
+            onPointerDown={startDrag}
+            whileDrag={{scale: 1.1, opacity: .8, shadow: 10}}
         >
-            <AreaHeader
-                className="drag-handle"
-                onPointerDown={(e) => {
-                    if(e.target.classList.contains('drag-handle')) return;
-                }}
+            <AreaWrapper
+                // drag
+                // whileDrag={{scale: 1.1, opacity: .8, shadow: 10}}
+                // // transition={{duration: .2}}
+                // // dragControls={dragControls}
+                // dragMomentum={false}
+                // onDragEnd={(e, info) => updateAreaPosition(id, info)}
+                // initial={{x: position.x, y: position.y, height: size.height, width: size.width}}
             >
-                <AreaTitle>
-                    {capitalizeFirstLetter(title)}
-                </AreaTitle>
-                <IconButton icon="🗑️" onClick={() => deleteArea(id)} />
-            </AreaHeader>
-            {/* this broke many things  */}
-            <Area
-                size={{
-                    width: size.width,
-                    height: size.height
-                }}
-                onResize={() => console.log('resize')}
-                onResizeStop={(e, direction, ref, d) => updateAreaSize(id, d)}
-            >
-            </Area>
+                <motion.div
+                    id="drag-handle"
+                    // onPointerDown={startDrag}
+                    onDragEnd={(e, info) => updateAreaPosition(id, info)}
+                >
+                <AreaHeader
+                    className="drag-handle"
+                    onPointerDown={(e) => {
+                        if(e.target.classList.contains('drag-handle')) return;
+                    }}
+                >
+                    <AreaTitle>
+                        {capitalizeFirstLetter(title)}
+                    </AreaTitle>
+                    <IconButton icon="🗑️" onClick={() => deleteArea(id)} />
+                </AreaHeader>
+            </motion.div>
+            
         </AreaWrapper>
+        {/* this broke many things  */}
+        <Area
+            size={{
+                width: size.width,
+                height: size.height
+            }}
+            onResize={(e) => console.log('resize', e)}
+            onResizeStop={(e, direction, ref, d) => updateAreaSize(id, d)}
+         />
+    </motion.div>
     )
     
 }

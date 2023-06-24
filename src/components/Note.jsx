@@ -25,7 +25,7 @@ export default function Note ({note, deleteNote, updateNotePosition, bringNoteTo
         padding: .5em;
         color: ${textAutoColor(note.color)};
         box-shadow: 1px 1px 7px 3px ${theme.shadow};
-        z-index: ${note.z};
+        z-index: 3;
         cursor: grab;
     `
 
