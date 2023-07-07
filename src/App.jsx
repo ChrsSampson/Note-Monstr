@@ -14,10 +14,13 @@ import { useTheme } from "@emotion/react";
 import Navbar from "./components/Navbar";
 import AppArea from "./components/AppArea";
 import Settings from "./components/Settings";
+import SignUpForm from "./components/SignUpForm";
+import LoginForm from "./components/LoginForm";
 
 import defaultColors from "./lib/defaultNoteColors";
 
 import { io } from "socket.io-client";
+import { SiFmod } from "react-icons/si";
 
 const socket = io("http://localhost:3000");
 
@@ -37,6 +40,16 @@ socket.on("echo", (message) => {
     console.log("echo", message);
 });
 
+function handleSignup(data, cb) {
+    socket.emit("sign-up", data, (res) => {
+        cb(res);
+    });
+}
+
+function handleLogin(data) {
+    socket.emit("user-login", data);
+}
+
 const borderOffset = 16;
 
 const AppContainer = styled.main`
@@ -51,6 +64,8 @@ function App() {
     const [themeMode, setThemeMode] = useLocalStorage("theme", "dark");
 
     const [showSettings, setShowSettings] = useState(false);
+    const [showSignUp, setShowSignUp] = useState(false);
+    const [showLogin, setShowLogin] = useState(false);
 
     const [colors, setColors] = useLocalStorage("noteColors", defaultColors);
 
@@ -66,6 +81,16 @@ function App() {
 
     function toggleSettings() {
         setShowSettings(!showSettings);
+    }
+
+    function toggleSignUp() {
+        setShowSettings(false);
+        setShowSignUp(!showSignUp);
+    }
+
+    function toggleLogin() {
+        setShowSettings(false);
+        setShowLogin(!showLogin);
     }
 
     const windowRef = {
@@ -88,16 +113,31 @@ function App() {
                 />
                 <AppArea windowRef={windowRef} noteColors={colors} />
             </AppContainer>
+            {/* overlays */}
             <Settings
                 display={showSettings}
                 setDisplay={setShowSettings}
+                toggleSignUp={toggleSignUp}
+                toggleLogin={toggleLogin}
                 noteColors={colors}
                 setColors={setColors}
                 themeMode={themeMode}
                 changeTheme={changeTheme}
             />
+            <SignUpForm
+                display={showSignUp}
+                setDisplay={setShowSignUp}
+                handleSubmit={handleSignup}
+            />
+            <LoginForm
+                display={showLogin}
+                setDisplay={setShowLogin}
+                handleSubmit={handleLogin}
+            />
         </ThemeProvider>
     );
 }
+
+export { socket };
 
 export default App;
