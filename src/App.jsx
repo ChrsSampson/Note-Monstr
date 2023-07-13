@@ -1,53 +1,66 @@
-import "./App.css";
+import './App.css';
 
-import useLocalStorage from "./lib/useLocalStorage";
-import useWindow from "./lib/useWindow";
+import useLocalStorage from './lib/useLocalStorage';
+import useWindow from './lib/useWindow';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
-import { ThemeProvider } from "@emotion/react";
-import { theme } from "./lib/theme";
-import { useTheme } from "@emotion/react";
+import { ThemeProvider } from '@emotion/react';
+import { theme } from './lib/theme';
+import { useTheme } from '@emotion/react';
 
-import Navbar from "./components/Navbar";
-import AppArea from "./components/AppArea";
-import Settings from "./components/Settings";
-import SignUpForm from "./components/SignUpForm";
-import LoginForm from "./components/LoginForm";
+import Navbar from './components/Navbar';
+import AppArea from './components/AppArea';
+import Settings from './components/Settings';
+import SignUpForm from './components/SignUpForm';
+import LoginForm from './components/LoginForm';
 
-import defaultColors from "./lib/defaultNoteColors";
+import defaultColors from './lib/defaultNoteColors';
 
-import { io } from "socket.io-client";
-import { SiFmod } from "react-icons/si";
+import { io } from 'socket.io-client';
+import { SiFmod } from 'react-icons/si';
 
-const socket = io("http://localhost:3000");
+let userSession = 'fuckballs';
 
-socket.on("connect", (ws) => {
-    console.log("up");
+const scrt = import.meta.env.VITE_SECRET;
+
+const socket = io('http://localhost:3000', {
+    auth: {
+        token: userSession,
+        secret: scrt,
+    },
 });
 
-socket.on("disconnect", (ws) => {
-    console.log("down");
+socket.on('connect', (ws) => {
+    console.log('up');
 });
 
-socket.on("error", (err) => {
-    console.error("Socket.IO Error", err);
+socket.on('disconnect', (ws) => {
+    console.log('down');
 });
 
-socket.on("echo", (message) => {
-    console.log("echo", message);
+socket.on('error', (err) => {
+    console.error('Socket.IO Error', err);
+});
+
+socket.on('echo', (message) => {
+    console.log('echo', message);
+});
+
+socket.on('connect_error', (err) => {
+    console.error('Connection Error', err);
 });
 
 function handleSignup(data, cb) {
-    socket.emit("sign-up", data, (res) => {
+    socket.emit('sign-up', data, (res) => {
         cb(res);
     });
 }
 
 function handleLogin(data) {
-    socket.emit("user-login", data);
+    socket.emit('user-login', data);
 }
 
 const borderOffset = 16;
@@ -61,13 +74,13 @@ const AppContainer = styled.main`
 `;
 
 function App() {
-    const [themeMode, setThemeMode] = useLocalStorage("theme", "dark");
+    const [themeMode, setThemeMode] = useLocalStorage('theme', 'dark');
 
     const [showSettings, setShowSettings] = useState(false);
     const [showSignUp, setShowSignUp] = useState(false);
     const [showLogin, setShowLogin] = useState(false);
 
-    const [colors, setColors] = useLocalStorage("noteColors", defaultColors);
+    const [colors, setColors] = useLocalStorage('noteColors', defaultColors);
 
     // auto adjust to window size
     const size = useWindow();
@@ -76,7 +89,7 @@ function App() {
     const widthAfterOffset = size.width - borderOffset;
 
     function changeTheme() {
-        setThemeMode(themeMode === "dark" ? "light" : "dark");
+        setThemeMode(themeMode === 'dark' ? 'light' : 'dark');
     }
 
     function toggleSettings() {
